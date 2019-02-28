@@ -1,0 +1,255 @@
+[
+  {
+    "id": 1,
+    "location":{
+      "lat":50.071127,
+      "lng":19.922192
+    },
+    "street":"Krolewska 20",
+    "img": "img/product.svg",
+    "title": "Pizza and Burgers Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-30",
+    "minimumOrder": 356,
+    "deliveryCost": 54,
+    "searchType": "pizza",
+    "promo": true,
+    "promoPANREST": true,
+    "homemade": true,
+    "pizza": true,
+    "thai": true,
+    "burgers": true
+  },
+  {
+    "id": 2,
+    "location":{
+      "lat":50.070726,
+      "lng":19.917069
+    },
+    "street":"plac nowowiejski 3",
+    "img": "img/product.svg",
+    "title": "Sushi Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-31",
+    "minimumOrder": 39,
+    "deliveryCost": 99,
+    "searchType": "sushi",
+    "newRestaurants": true,
+    "sushi": true,
+    "cuban": true,
+    "mexican": true,
+    "theArab": true,
+    "ukrainian": true,
+    "poland": true,
+    "burgers": true
+  },
+  {
+    "id": 3,
+    "location":{
+      "lat":50.073895,
+      "lng":19.916181
+    },
+    "street":"aleja kijowska 22",
+    "img": "img/product-2.svg",
+    "title": "Asian Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-32",
+    "minimumOrder": 124,
+    "deliveryCost": 542,
+    "searchType": "asian",
+    "promo": true,
+    "newRestaurants": true,
+    "canadian": true
+  },
+  {
+    "id": 4,
+    "location":{
+      "lat":50.050456,
+      "lng":19.938623
+    },
+    "street":"Jozefa Dietla street",
+    "img": "img/product.svg",
+    "title": "Indian Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-33",
+    "minimumOrder": 751,
+    "deliveryCost": 216,
+    "searchType": "indian",
+    "promoPANREST": true,
+    "newRestaurants": true,
+    "canadian": true,
+    "ukrainian": true,
+    "poland": true,
+    "burgers": true
+  },
+  {
+    "id": 5,
+    "location":{
+      "lat":50.052695,
+      "lng":19.957048
+    },
+    "street":"Podgórska 44",
+    "img": "img/product-2.svg",
+    "title": "Homemade Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-34",
+    "minimumOrder": 751,
+    "deliveryCost": 83,
+    "searchType": "homemade",
+    "newRestaurants": true,
+    "burgers": true,
+    "homemade": true,
+    "american": true,
+    "dumplings": true
+  },
+  {
+    "id": 6,
+    "location":{
+      "lat":50.055702,
+      "lng":19.957657
+    },
+    "street":"Semperitowców 10",
+    "img": "img/product-2.svg",
+    "title": "Burgery Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-35",
+    "minimumOrder": 320,
+    "deliveryCost": 80,
+    "searchType": "burgery",
+    "promoPANREST": true,
+    "irish": true,
+    "turkish": true,
+    "australian": true,
+    "ukrainian": true,
+    "poland": true
+  },
+  {
+    "id": 7,
+    "location":{
+      "lat":50.065608,
+      "lng":19.954475
+    },
+    "street":"Ariańska 9",
+    "img": "img/product.svg",
+    "title": "Pasta Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-36",
+    "minimumOrder": 666,
+    "deliveryCost": 85,
+    "searchType": "pasta",
+    "newRestaurants": true,
+    "dumplings": true,
+    "austrian": true,
+    "burgers": true
+  },
+  {
+    "id": 8,
+    "location":{
+      "lat":50.067679,
+      "lng":19.944921
+    },
+    "street":"Mogilska 68",
+    "img": "img/product-2.svg",
+    "title": "Dumplings Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-37",
+    "minimumOrder": 375,
+    "deliveryCost": 80,
+    "searchType": "dumplings",
+    "promoPANREST": true,
+    "baskijski": true,
+    "belarusian": true,
+    "british": true,
+    "poland": true,
+    "ukrainian": true
+  },
+  {
+    "id": 9,
+    "location":{
+      "lat":50.0653399,
+      "lng":19.934428
+    },
+    "street":" Pawia 22",
+    "img": "img/product.svg",
+    "title": "Arabic Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-38",
+    "minimumOrder": 250,
+    "deliveryCost": 221,
+    "searchType": "arabic",
+    "promo": true,
+    "promoPANREST": true,
+    "newRestaurants": true,
+    "bulgarian": true,
+    "czech": true,
+    "french": true,
+    "theArab": true
+  },
+  {
+    "id": 10,
+    "location":{
+      "lat":50.0653399,
+      "lng":19.934428
+    },
+    "street":"Juliana Dunajewskiego 22",
+    "img": "img/product.svg",
+    "title": "Kebab Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-39",
+    "minimumOrder": 300,
+    "deliveryCost": 875,
+    "searchType": "kebab",
+    "promo": true,
+    "promoPANREST": true,
+    "croatian": true,
+    "bulgarian": true,
+    "german": true,
+    "pizza": true,
+    "ukrainian": true,
+    "poland": true
+  },
+  {
+    "id": 11,
+    "location":{
+      "lat":50.076328,
+      "lng":19.963489
+    },
+    "street": "Ignacego Łukasiewicza 3",
+    "img": "img/product-2.svg",
+    "title": "Pancakes Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-40",
+    "minimumOrder": 800,
+    "deliveryCost": 1,
+    "searchType": "pancakes",
+    "promo": true,
+    "estonian": true,
+    "finnish": true,
+    "greek": true,
+    "ukrainian": true,
+    "poland": true
+  },
+  {
+    "id": 12,
+    "location":{
+      "lat":52.239322,
+      "lng":21.010332
+    },
+    "street": "Warszawa Królewska",
+    "img": "img/product.svg",
+    "title": "Salads Restoraunt",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "contacts": "+033-111-222-41",
+    "minimumOrder": 500,
+    "deliveryCost": 21,
+    "searchType": "salads",
+    "promoPANREST": true,
+    "spanish": true,
+    "dutch": true,
+    "irish": true,
+    "catalan": true,
+    "pizza": true,
+    "ukrainian": true,
+    "poland": true
+  }
+]

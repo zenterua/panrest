@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        body {
+            margin: 50px;
+        }
+        #googleAutocomplete {
+            width: 300px;
+            height: 20px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        .productItem {
+            display: block;
+            background-color: #eee;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        .productItem:last-child {
+            margin-bottom: 0;
+        }
+        .productItem .as {
+            margin-top: 0;
+        }
+        .productInfo{
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .productInfo .as span,
+        .productInfo p span {
+            font-style: italic;
+            font-weight: 600;
+        }
+        .productItem .imgWrapper {
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 15px;
+            max-width: 90px;
+        }
+        .productItem img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        #productCount {
+            font-style: italic;
+            font-size: 20px;
+            line-height: 24px;
+        }
+        .filteringWrapper {
+            margin-right: 30px;
+            max-width: 250px;
+        }
+        .filterGroup label {
+            display: table;
+            cursor: pointer;
+            padding: 3px 0;
+        }
+        .searchWrapper {
+            position: relative;
+        }
+        .searchWrapper input {
+            padding: 15px 45px 15px 15px;
+        }
+        .searchWrapper .startSearch {
+            position: absolute;
+            top: 0;
+            right: 15px;
+            width: 22px;
+            height: 22px;
+            pointer-events: none;
+        }
+        .mainWrapper {
+            display: flex;
+        }
+        #productContainer {
+            flex-grow: 1;
+        }
+        .filteringWrapper.searching label:not(.searchWrapper) {
+            opacity: .5;
+            pointer-events: none;
+        }
+        .productPagination ul {
+            margin: 0;
+            padding: 0;
+        }
+        .productPagination li {
+            display: inline-block;
+            margin: 0 7px;
+            min-width: 26px;
+            height: 26px;
+            text-align: center;
+            line-height: 26px;
+            color: #000;
+            font-size: 14px;
+            border-radius: 8px;
+        }
+        .productPagination li.active {
+            background-color: #eee;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body id="index-detail" data-search="1000" data-pagestep="2">
+    <div class="mainWrapper">
+        <!--Filtering - START-->
+        <div class="filteringWrapper">
+            <label class="searchWrapper">
+                <input type="text" id="search" placeholder="Wyszukaj restaurację">
+                <img src="img/search.svg" class="startSearch" alt="search">
+            </label>
+
+            <div style="height: 25px"></div>
+            <div class="filterGroup sorting">
+                <h3>Sortuj</h3>
+                <label>
+                    <span><input type="radio" name="sort" value="minOrder"> Minimalna kwota zamówienia</span>
+                </label>
+                <label>
+                    <span><input type="radio" name="sort" value="deliveryCost"> Koszt dostawy</span>
+                </label>
+            </div>
+            <div style="height: 25px"></div>
+            <div class="filterGroup filtering">
+                <h3>Filtruj</h3>
+                <label>
+                    <span><input type="checkbox" name="sort-2" value="promo"> Promocje </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-2" value="promoPANREST"> Promotions PANREST </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-2" value="newRestaurants"> Nowe restauracje </span>
+                </label>
+            </div>
+            <div style="height: 25px"></div>
+            <div class="filterGroup types">
+                <h3>Rodzaje kuchni</h3>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="cuisinesOfTheWorld"> Kuchnie świata</span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="homemade"> Domowe</span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="sushi"> Sushi</span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="pizza"> Pizza </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="burgers"> Burgery </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="dumplings"> Pierogi </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="austrian"> Austriacka </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="baskijski"> Baskijska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="belarusian"> Białoruska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="british"> Brytyjska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="bulgarian"> Bułgarska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="croatian"> Chorwacka </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="czech"> Czeska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="estonian"> Estońska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="finnish"> Fińska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="french"> Francuska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="greek"> Grecka </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="spanish"> Hiszpańska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="dutch"> Holenderska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="irish"> Irlandzka </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="catalan"> Katalońska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="german"> Niemiecka </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="poland"> Polska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="portuguese"> Portugalska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="russian"> Rosyjska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="romanian"> Rumuńska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="slovenian"> Słoweńska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="silesia"> Sląska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="ukrainian"> Ukraińska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="hungarian"> Węgierska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="italian"> Włoska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="georgian"> Gruzińska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="theArab"> Arabska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="chinese"> Chińska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="indonesian"> Indonezyjska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="indian"> Indyjska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="japanese"> Japońska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="thai"> Tajska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="american"> Turecka </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="turkish"> Turkish </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="vietnamese"> Wietnamska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="nepalese"> Nepalska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="australian"> Australijska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="argentine"> Argentyńska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="brazilian"> Brazylijska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="american"> Amerykańska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="canadian"> Kanadyjska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="cuban"> Kubańska </span>
+                </label>
+                <label>
+                    <span><input type="checkbox" name="sort-3" value="mexican"> Meksykańska </span>
+                </label>
+
+            </div>
+        </div>
+        <!--Filtering - END-->
+
+        <div class="productWrapper">
+            <div id="nothingFound" hidden>
+                <h2>Nothing found :(</h2>
+            </div>
+
+            <div id="invalidAddress" hidden>
+                <h2>Seems you entered an incorrect address.</h2>
+            </div>
+
+            <div id="productContainer"></div>
+            <div style="height: 50px"></div>
+            <div class="productPagination"></div>
+        </div>
+
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.simplePagination.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrWW3DTbEh8pKQtWigNHrI_XoYub5y-gQ&libraries=places&language=en"></script>
+</body>
+</html>
