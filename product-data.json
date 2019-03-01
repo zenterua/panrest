@@ -5,6 +5,7 @@
       "lat":50.071127,
       "lng":19.922192
     },
+    "distance": 1232,
     "street":"Krolewska 20",
     "img": "img/product.svg",
     "title": "Pizza and Burgers Restoraunt",
@@ -26,6 +27,7 @@
       "lat":50.070726,
       "lng":19.917069
     },
+    "distance": 246,
     "street":"plac nowowiejski 3",
     "img": "img/product.svg",
     "title": "Sushi Restoraunt",
@@ -49,6 +51,7 @@
       "lat":50.073895,
       "lng":19.916181
     },
+    "distance": 1023,
     "street":"aleja kijowska 22",
     "img": "img/product-2.svg",
     "title": "Asian Restoraunt",
@@ -67,6 +70,7 @@
       "lat":50.050456,
       "lng":19.938623
     },
+    "distance": 865,
     "street":"Jozefa Dietla street",
     "img": "img/product.svg",
     "title": "Indian Restoraunt",
@@ -80,7 +84,8 @@
     "canadian": true,
     "ukrainian": true,
     "poland": true,
-    "burgers": true
+    "burgers": true,
+    "pizza": true
   },
   {
     "id": 5,
@@ -88,6 +93,7 @@
       "lat":50.052695,
       "lng":19.957048
     },
+    "distance": 1246,
     "street":"Podgórska 44",
     "img": "img/product-2.svg",
     "title": "Homemade Restoraunt",
@@ -108,6 +114,7 @@
       "lat":50.055702,
       "lng":19.957657
     },
+    "distance": 665,
     "street":"Semperitowców 10",
     "img": "img/product-2.svg",
     "title": "Burgery Restoraunt",
@@ -129,6 +136,7 @@
       "lat":50.065608,
       "lng":19.954475
     },
+    "distance": 2313,
     "street":"Ariańska 9",
     "img": "img/product.svg",
     "title": "Pasta Restoraunt",
@@ -148,6 +156,7 @@
       "lat":50.067679,
       "lng":19.944921
     },
+    "distance": 2751,
     "street":"Mogilska 68",
     "img": "img/product-2.svg",
     "title": "Dumplings Restoraunt",
@@ -169,6 +178,7 @@
       "lat":50.0653399,
       "lng":19.934428
     },
+    "distance": 1993,
     "street":" Pawia 22",
     "img": "img/product.svg",
     "title": "Arabic Restoraunt",
@@ -191,6 +201,7 @@
       "lat":50.0653399,
       "lng":19.934428
     },
+    "distance": 1676,
     "street":"Juliana Dunajewskiego 22",
     "img": "img/product.svg",
     "title": "Kebab Restoraunt",
@@ -206,7 +217,9 @@
     "german": true,
     "pizza": true,
     "ukrainian": true,
-    "poland": true
+    "poland": true,
+    "sushi": true,
+    "burgers": true
   },
   {
     "id": 11,
@@ -214,6 +227,7 @@
       "lat":50.076328,
       "lng":19.963489
     },
+    "distance": 235,
     "street": "Ignacego Łukasiewicza 3",
     "img": "img/product-2.svg",
     "title": "Pancakes Restoraunt",
@@ -227,7 +241,9 @@
     "finnish": true,
     "greek": true,
     "ukrainian": true,
-    "poland": true
+    "poland": true,
+    "sushi": true,
+    "pizza": true
   },
   {
     "id": 12,
@@ -235,6 +251,7 @@
       "lat":52.239322,
       "lng":21.010332
     },
+    "distance": 1866,
     "street": "Warszawa Królewska",
     "img": "img/product.svg",
     "title": "Salads Restoraunt",

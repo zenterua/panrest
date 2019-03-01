@@ -81,7 +81,7 @@
         .mainWrapper {
             display: flex;
         }
-        #productContainer {
+        .productWrapper {
             flex-grow: 1;
         }
         .filteringWrapper.searching label:not(.searchWrapper) {
@@ -111,7 +111,7 @@
         }
     </style>
 </head>
-<body id="index-detail" data-search="1000" data-pagestep="2">
+<body id="index-detail" data-search="1000" data-pagestep="3">
     <div class="mainWrapper">
         <!--Filtering - START-->
         <div class="filteringWrapper">
@@ -123,6 +123,9 @@
             <div style="height: 25px"></div>
             <div class="filterGroup sorting">
                 <h3>Sortuj</h3>
+                <label>
+                    <span><input type="radio" name="sort" value="distance"> Odległość</span>
+                </label>
                 <label>
                     <span><input type="radio" name="sort" value="minOrder"> Minimalna kwota zamówienia</span>
                 </label>

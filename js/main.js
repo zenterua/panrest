@@ -37,10 +37,12 @@ jQuery(function ($) {
         if ( $('#index-detail').length ) { // check if we in search detail page
             geocoder.geocode({"address":address}, function(results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
+                    var streetLocation = results[0].geometry.location,
+                        locationLatLngArray = [];
                     $('#invalidAddress').attr('hidden', true);
-                    drawRadius(results[0].geometry.location);
+                    drawRadius(streetLocation); // draw radius
 
-                    $.ajax({
+                    $.ajax({ // get all id restoraunt
                         url: 'map-data.json',
                         type: 'get',
                         dataType: 'json',
@@ -50,35 +52,57 @@ jQuery(function ($) {
                         success: function(locationsData) {
                             for ( var i = 0; i < locationsData.length; i++ ) { // get points inside radius
                                 if ( circle.getBounds().contains( new google.maps.LatLng( locationsData[i].location.lat, locationsData[i].location.lng )) ) {
-                                    locationsFound.push(locationsData[i].id);
+                                    locationsFound.push(locationsData[i]); // create array with points inside radius
+                                    locationLatLngArray.push(locationsData[i].location); // create array with longitude and latitude for calculating distance
                                 }
                             }
 
-                            if ( locationsFound.length > 0 ) {
-                                $.ajax({
-                                    url: 'product-data.json',
-                                    type: 'get',
-                                    dataType: 'json',
-                                    error: function () {
-                                        console.log('data map-data error');
-                                    },
-                                    success: function (productsData) {
-                                        finalProducts = productsData;
-                                        hashParams.forEach(function (item, index) {
-                                            if ( index === 0 ) return;
-                                            if ( item.indexOf('search') >= 0 ) {
-                                                searchVal = item.slice(item.indexOf('=') + 1);
-                                                $('#search').val(searchVal);
-                                            }
-                                            $('.filteringWrapper input[value='+ item.slice(item.indexOf('=') + 1) +']').prop('checked', true);
-                                        });
-                                        filtering();
-                                    }
-                                })
-                            } else {
+                            console.log(locationsFound);
+                            console.log(locationLatLngArray);
+                            if ( locationsFound.length === 0 ) {
                                 $('#nothingFound').attr('hidden', false);
                                 $('#productContainer').attr('hidden', true);
+                                return false;
                             }
+
+                            var service = new google.maps.DistanceMatrixService;
+                            service.getDistanceMatrix({
+                                origins: [streetLocation],
+                                destinations: locationLatLngArray,
+                                travelMode: 'DRIVING',
+                                unitSystem: google.maps.UnitSystem.METRIC,
+                                avoidHighways: false,
+                                avoidTolls: false
+                            }, function(response, status) {
+                                if (status !== 'OK') {
+                                    console.log('Error was: ' + status);
+                                } else {
+                                    locationsFound.map(function (item, index) { // add distance to each id
+                                        item.distance = response.rows[0].elements[index].distance.value;
+                                    });
+                                    $.ajax({
+                                        url: 'product-data.json',
+                                        type: 'get',
+                                        dataType: 'json',
+                                        error: function () {
+                                            console.log('data map-data error');
+                                        },
+                                        success: function (productsData) {
+                                            console.log('send id');
+                                            finalProducts = productsData;
+                                            hashParams.forEach(function (item, index) {
+                                                if ( index === 0 ) return;
+                                                if ( item.indexOf('search') >= 0 ) {
+                                                    searchVal = item.slice(item.indexOf('=') + 1);
+                                                    $('#search').val(searchVal);
+                                                }
+                                                $('.filteringWrapper input[value='+ item.slice(item.indexOf('=') + 1) +']').prop('checked', true);
+                                            });
+                                            filtering();
+                                        }
+                                    });
+                                }
+                            });
                         }
                     })
                 } else { // show errors message if user set invalid streets on google autocomplete
@@ -118,6 +142,8 @@ jQuery(function ($) {
     }
     
     function filtering() {
+        if ( !locationsFound.length ) return false; // if nothing found - stop filtering
+
         var bufferProducts = finalProducts,
             notSearching = true,
             sorting = '',
@@ -126,8 +152,9 @@ jQuery(function ($) {
             slicePos = pageStep * pageNumber,
             paginatedProductArray = [];
 
-        if ( searchVal ) {
-            notSearching = false;
+        if ( searchVal ) { // if we use searcing
+            pageNumber = 1;
+            notSearching = false; // disable other filtering and sorting
             $('.filteringWrapper').addClass('searching');
             bufferProducts = finalProducts;
             bufferProducts = bufferProducts.filter(function (item) {
@@ -181,18 +208,26 @@ jQuery(function ($) {
             }
 
             if ( sorting ) { // sorting section
-                if ( sorting === 'minOrder'  ) {
+                if ( sorting === 'minOrder'  ) { // sorting if we select min order
                     bufferProducts.sort(function (a, b) {
                         if (a.minimumOrder < b.minimumOrder) return -1;
                         if (a.minimumOrder > b.minimumOrder) return 1;
                         return 0;
                     });
-                } else if ( sorting === 'deliveryCost' )
+                } else if ( sorting === 'deliveryCost' ) { // sorting if we select delivery cost
                     bufferProducts.sort(function (a, b) {
                         if (a.deliveryCost < b.deliveryCost) return -1;
                         if (a.deliveryCost > b.deliveryCost) return 1;
                         return 0;
                     });
+                } else { // and if we select sorting be distance between address and all points inside radius
+                    bufferProducts.sort(function (a, b) {
+                        if (a.distance < b.distance) return -1;
+                        if (a.distance > b.distance) return 1;
+                        return 0;
+                    });
+                }
+
             }
         }
 
@@ -221,7 +256,6 @@ jQuery(function ($) {
             window.history.pushState({}, '', window.location.href + "#page-" + pageNumber);
         }
 
-
         $('.productPagination').pagination({
             items: bufferProducts.length,
             currentPage: pageNumber,
@@ -232,9 +266,7 @@ jQuery(function ($) {
             }
         });
 
-        console.log(bufferProducts);
-        console.log(paginatedProductArray);
-        if (paginatedProductArray.length) {
+        if (bufferProducts.length) { // check if after filtering we has some points
             $('.productPagination').removeClass('hidden');
             $('#nothingFound').attr('hidden', true);
             $('#productContainer').attr('hidden', false);
@@ -260,6 +292,7 @@ jQuery(function ($) {
                     "<p><span>Description: </span>"+ item.description  +"</p>" +
                     "<p><span>Minimum order: </span>"+ item.minimumOrder +"</p>" +
                     "<p><span>Delivery Cost: </span>"+ item.deliveryCost +"</p>" +
+                    "<p><span>Distance: </span>"+ (item.distance / 1000).toFixed(1) + " km" +"</p>" +
                     "<a href='tel:"+ item.contacts +"'>"+ item.contacts +"</a>" +
                 "</div>" +
                 "</div>"
