@@ -85,8 +85,16 @@
             flex-grow: 1;
         }
         .filteringWrapper.searching label:not(.searchWrapper) {
+            opacity: .5 !important;
+            pointer-events: none !important;
+        }
+        .filterGroup.types label {
             opacity: .5;
             pointer-events: none;
+        }
+        .filterGroup.types label.available {
+            opacity: 1;
+            pointer-events: all;
         }
         .productPagination ul {
             margin: 0;

@@ -16,16 +16,16 @@ jQuery(function ($) {
 
     $(window).load(function () {
         geocoder = new google.maps.Geocoder();
-        hashParams = window.location.search.split('&');
-        pageNumber = window.location.hash.substr(1) ? window.location.hash.substr(1).slice(window.location.hash.substr(1).indexOf('-') + 1) : 1;
+        hashParams = window.location.search.split('&'); // array from all url params
+        pageNumber = window.location.hash.substr(1) ? window.location.hash.substr(1).slice(window.location.hash.substr(1).indexOf('-') + 1) : 1; //get pagination pagination
         address = decodeURI(window.location.search.split('&')[0]); // get street from url params
 
-        if ( window.location.hash.substr(1) ) {
+        if ( window.location.hash.substr(1) ) { // add to url page param
             hashParams.push(window.location.hash.substr(1));
         }
 
-        if ( $('#googleAutocomplete').length ) {
-            autocomplete = new google.maps.places.Autocomplete(( // google autocomplete
+        if ( $('#googleAutocomplete').length ) { // google autocomplete
+            autocomplete = new google.maps.places.Autocomplete((
                 document.getElementById('googleAutocomplete')), {
                 types: ['geocode'],
                 componentRestrictions: {country: "pl"}
@@ -34,11 +34,11 @@ jQuery(function ($) {
             autocomplete.addListener('place_changed', userSelectLocation);
         }
 
-        if ( $('#index-detail').length ) { // check if we in search detail page
+        if ( $('#index-detail').length ) { // check if search detail page
             geocoder.geocode({"address":address}, function(results, status) {
                 if (status === google.maps.GeocoderStatus.OK) {
                     var streetLocation = results[0].geometry.location,
-                        locationLatLngArray = [];
+                        locationLatLngArray = []; // this array for google map calculation distance
                     $('#invalidAddress').attr('hidden', true);
                     drawRadius(streetLocation); // draw radius
 
@@ -57,16 +57,14 @@ jQuery(function ($) {
                                 }
                             }
 
-                            console.log(locationsFound);
-                            console.log(locationLatLngArray);
-                            if ( locationsFound.length === 0 ) {
+                            if ( locationsFound.length === 0 ) { // if nothing found, show errors messages
                                 $('#nothingFound').attr('hidden', false);
                                 $('#productContainer').attr('hidden', true);
                                 return false;
                             }
 
                             var service = new google.maps.DistanceMatrixService;
-                            service.getDistanceMatrix({
+                            service.getDistanceMatrix({ // google map distance
                                 origins: [streetLocation],
                                 destinations: locationLatLngArray,
                                 travelMode: 'DRIVING',
@@ -77,7 +75,7 @@ jQuery(function ($) {
                                 if (status !== 'OK') {
                                     console.log('Error was: ' + status);
                                 } else {
-                                    locationsFound.map(function (item, index) { // add distance to each id
+                                    locationsFound.map(function (item, index) { // add distance to each array id from first ajax
                                         item.distance = response.rows[0].elements[index].distance.value;
                                     });
                                     $.ajax({
@@ -88,17 +86,24 @@ jQuery(function ($) {
                                             console.log('data map-data error');
                                         },
                                         success: function (productsData) {
-                                            console.log('send id');
                                             finalProducts = productsData;
+                                            finalProducts.forEach(function (item) {
+                                                Object.keys(item).forEach(function (key) { // turn on filter if found match products and filter input value
+                                                    if ( $('.filterGroup.types input[value="' + key + '"]').length ) {
+                                                        $('.filterGroup.types input[value="' + key + '"]').closest('label').addClass('available');
+                                                    }
+                                                });
+
+                                            });
                                             hashParams.forEach(function (item, index) {
                                                 if ( index === 0 ) return;
-                                                if ( item.indexOf('search') >= 0 ) {
+                                                if ( item.indexOf('search') >= 0 ) { // try find url search parameter
                                                     searchVal = item.slice(item.indexOf('=') + 1);
                                                     $('#search').val(searchVal);
                                                 }
-                                                $('.filteringWrapper input[value='+ item.slice(item.indexOf('=') + 1) +']').prop('checked', true);
+                                                $('.filteringWrapper input[value='+ item.slice(item.indexOf('=') + 1) +']').prop('checked', true); // check all filter from url parameters
                                             });
-                                            filtering();
+                                            filtering(); // start filtering
                                         }
                                     });
                                 }
@@ -118,10 +123,10 @@ jQuery(function ($) {
         var urlParams = '';
         if ( autocomplete.getPlace().formatted_address ) {   // user select address from autocomplete
             urlParams = autocomplete.getPlace().formatted_address;
-            locationRedirect(urlParams);
+            window.location.href = "./index-detail.html" + "?" + urlParams;
         } else { // user write address himself and press enter
             urlParams = $(".pac-container .pac-item:first").text();
-            locationRedirect(urlParams);
+            window.location.href = "./index-detail.html" + "?" + urlParams;
         }
     }
 
@@ -131,18 +136,9 @@ jQuery(function ($) {
             radius: $('#index-detail').data('search') ? $('#index-detail').data('search') : 1000
         });
     }
-
-    function locationRedirect(urlParams) {
-        if ( !!$('#index-detail').length ) { // just replace current url to street param for reload page functionality
-            window.history.pushState({}, '', './index-detail.html?' + urlParams);
-            $('#googleAutocomplete').val(urlParams);
-        } else {  // make redirect to detail search page if user enter street in main search page
-            window.location.href = "./index-detail.html" + "?" + urlParams;
-        }
-    }
     
     function filtering() {
-        if ( !locationsFound.length ) return false; // if nothing found - stop filtering
+        if ( !locationsFound.length ) return false; // if no location found - stop filtering
 
         var bufferProducts = finalProducts,
             notSearching = true,
@@ -150,13 +146,14 @@ jQuery(function ($) {
             filteringValues = [],
             typesFiltering = [],
             slicePos = pageStep * pageNumber,
-            paginatedProductArray = [];
+            paginatedProductArray = [],
+            uniqueUrlParams = [];
 
-        if ( searchVal ) { // if we use searcing
+        if ( searchVal ) { // if we use searching input
             pageNumber = 1;
             notSearching = false; // disable other filtering and sorting
             $('.filteringWrapper').addClass('searching');
-            bufferProducts = finalProducts;
+            bufferProducts = finalProducts; // searching from full location array, not after filtering, or sorting
             bufferProducts = bufferProducts.filter(function (item) {
                 if ( item.title.toLocaleLowerCase().indexOf(searchVal) >= 0 || item.searchType.toLocaleLowerCase().indexOf(searchVal) >= 0 ) {
                     return item;
@@ -167,7 +164,7 @@ jQuery(function ($) {
             notSearching = true;
         }
 
-        $('.filteringWrapper input').map(function () {
+        $('.filteringWrapper input').map(function () { // check filtering inputs
             if ( $(this).is(':checked') ) {
                 if ( $(this).closest('.filterGroup').hasClass('sorting') ) {
                     sorting = $(this).val();
@@ -186,7 +183,7 @@ jQuery(function ($) {
             }
         });
 
-        if ( notSearching ) { // check if use search input, if use - this filters not using
+        if ( notSearching ) { // if user search input then this filters not using
             if ( filteringValues.length ) { // filtering section
                 filteringValues.forEach(function (category) {
                     bufferProducts = bufferProducts.filter(function (item) {
@@ -220,7 +217,7 @@ jQuery(function ($) {
                         if (a.deliveryCost > b.deliveryCost) return 1;
                         return 0;
                     });
-                } else { // and if we select sorting be distance between address and all points inside radius
+                } else { // and if we select sorting distance between address and all points inside radius
                     bufferProducts.sort(function (a, b) {
                         if (a.distance < b.distance) return -1;
                         if (a.distance > b.distance) return 1;
@@ -231,16 +228,16 @@ jQuery(function ($) {
             }
         }
 
-        var uniqueUrlParams = urlParams.filter(function(v, i, a) {
+        uniqueUrlParams = urlParams.filter(function(v, i, a) { // here remove duplicate filters params
               return a.indexOf(v) === i
         });
 
         if ( uniqueUrlParams.length ) { // add filter parameters to url
             var paramsEncoded = $.param({ filter: uniqueUrlParams }, true),
                 paramsDecoded = decodeURIComponent(paramsEncoded);
-            window.history.pushState({}, '', address + "&" + paramsDecoded);
+            window.history.pushState({}, '', address + "&" + paramsDecoded); // get standart url with address and add parameters
         } else {
-            window.history.pushState({}, '', address);
+            window.history.pushState({}, '', address); // if nothing found just set to url standart url with address
         }
 
         if ( searchVal ) { // add search value to url
@@ -249,14 +246,14 @@ jQuery(function ($) {
             window.history.pushState({}, '', window.location.href + "&" + seachPparamsDecoded);
         }
 
-        if (pageNumber === 1) {
+        if (pageNumber === 1) { // here we slice number of content from product array
             paginatedProductArray = bufferProducts.slice(0 , slicePos);
         } else {
             paginatedProductArray = bufferProducts.slice( (slicePos - pageStep), slicePos );
             window.history.pushState({}, '', window.location.href + "#page-" + pageNumber);
         }
 
-        $('.productPagination').pagination({
+        $('.productPagination').pagination({ // init jquery pagination lib // http://flaviusmatis.github.com/simplePagination.js/
             items: bufferProducts.length,
             currentPage: pageNumber,
             itemsOnPage: $('#index-detail').data('pagestep') ? $('#index-detail').data('pagestep') : 10,
@@ -270,8 +267,10 @@ jQuery(function ($) {
             $('.productPagination').removeClass('hidden');
             $('#nothingFound').attr('hidden', true);
             $('#productContainer').attr('hidden', false);
+            // if pagination slice array length same like all product array - hide pagination
+            bufferProducts.length === paginatedProductArray.length ? $('.productPagination').attr('hidden', true) : $('.productPagination').attr('hidden', false);
             createHtmlFields(paginatedProductArray); // create html and append to DOM
-        } else {
+        } else { // if nothing found show error messages
             $('.productPagination').addClass('hidden');
             $('#nothingFound').attr('hidden', false);
             $('#productContainer').attr('hidden', true);
@@ -279,8 +278,11 @@ jQuery(function ($) {
 
     }
     
-    function createHtmlFields(bufferProducts) {
-        reset();
+    function createHtmlFields(bufferProducts) { // created html after filtering, sorting etc.
+        $('#productContainer').html('');
+        contentsStr = '';
+        if (circle) circle.setMap(null);
+
         bufferProducts.forEach(function (item) {
             contentsStr += "<div class='productItem'>" +
                 "<div class='imgWrapper'>" +
@@ -301,12 +303,6 @@ jQuery(function ($) {
         $('#productContainer').append(contentsStr);
     }
 
-    function reset() {
-        $('#productContainer').html('');
-        contentsStr = '';
-        if (circle) circle.setMap(null)
-    }
-
     // Events
     $('#googleAutocomplete').keyup(function (e) { // google autocomplete enter functionality
         if (e.keyCode === 13) {
@@ -314,12 +310,12 @@ jQuery(function ($) {
         }
     });
 
-    $('#search').keyup(function () {
+    $('#search').keyup(function () { // start filter after beginning write some text
         searchVal = $('#search').val().toLocaleLowerCase();
         filtering();
     });
 
-    $('.filterGroup  input').on('change', function () {
+    $('.filterGroup  input').on('change', function () { // start filtering after change any filter input
         urlParams = [];
         filtering();
     });
